@@ -11,37 +11,16 @@ quake = Spell("Quake",25,230,"black")
 cure= Spell ("Cure",12,120,"white")
 love= Spell ("Love",20,240,"white")
 
+#all the magic in one place
 magic=[fire,thunder,quake,cure,love]
 
 
-# magic=[
-#     {
-#         "name":"Fire",
-#         "cost":10,
-#         "dmg":60
+player = Person(500,65,30,magic)
+enemy = Person(500,65,30,magic)
 
-#     },
-#     {
-#         "name":"Thunder",
-#         "cost":15,
-#         "dmg":160
-
-#     },
-#     {
-#         "name":"Blizzard",
-#         "cost":25,
-#         "dmg":240
-
-#     }
-# ]
-
-
-player = Person(1000,65,30,magic)
-enemy = Person(250,65,30,magic)
 
 running =True 
 i=0
-
 ##PLAYER CHOICE FOR ATTACK##
 print(colored("ATTACK", "red"))
 while running:
@@ -51,14 +30,15 @@ while running:
     #minus 1 as indexing starts from 0
     choice=int(input("Choose action:"))-1
     print("You choose {}".format(player.actions[int(choice)]))
-
-
+    
+    #Attack choosen
     if choice == 0:
         dmg = player.generate_damage()
         enemy.take_damage(dmg)
         print("You attaked with force ", dmg , " making your Enemy HP:", enemy.get_hp())
     else:
-        #Allowing Player to choose Spell
+    #Magic choosen
+    #Allowing Player to choose Spell
         player.choose_magic()
         print("Your mp is:", player.get_mp())
         magic_choice = int(input("Choose magic: "))-1
@@ -78,9 +58,9 @@ while running:
         player.reduce_mp(spell.cost)
         enemy.take_damage(magic_dmg)
         print(spell.name ,"attacked YOUR ENEMY with force ", str(magic_dmg), " making your Enemy HP:", enemy.get_hp())
+        
 
-    ##ENEMY AI FOR ATTACK##
-
+    ##ENEMY Simple AI FOR ATTACK##
     if enemy.get_mp() >= 10:
         enemy_choice=int(random.randrange(0,2))
         if enemy_choice==0:
@@ -99,12 +79,8 @@ while running:
             if spell.cost > current_mp:
                 enemy_choice_magic=0
             
-            enemy_magic_dmg=spell.generate_damage()
-                 
-            
-                    
-            
-
+            enemy_magic_dmg=spell.generate_damage()            
+                            
             enemy.reduce_mp(spell.cost)
             player.take_damage(enemy_magic_dmg)
             print(spell.name ,"attacked YOU with force ", str(enemy_magic_dmg), " making your HP:", player.get_hp())
@@ -115,8 +91,10 @@ while running:
         enemy_dmg=enemy.generate_damage()
         player.take_damage(enemy_dmg)
         print("Enemy attacks for", enemy_dmg, "point. Your HP:",player.get_hp())
+        
+        
 
- ##ENEMY AI FOR HEAL##
+ ##ENEMY Simple AI FOR HEAL##
     if enemy.get_mp() >= 12:
         if enemy.get_hp() <= 250:
             #print("ALERT!!!! You are running out of health")
